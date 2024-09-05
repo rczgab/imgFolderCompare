@@ -26,8 +26,8 @@ def compare_images(folder1, folder2):
 
     for file in smaller_folder:
         if file in larger_folder:
-            filepath1 = os.path.join(folder1, file)
-            filepath2 = os.path.join(folder2, file)
+            filepath1 = os.path.normpath(os.path.join(folder1, file))
+            filepath2 = os.path.normpath(os.path.join(folder2, file))
 
             # Get file information
             size1, img_size1, mod_date1 = get_file_info(filepath1)
@@ -95,14 +95,23 @@ def display_images(filepath1, filepath2, size1, size2, img_size1, img_size2, mod
     img_size_label2.grid(row=2, column=2)
 
     # Modification date comparison
-    color_mod_date = 'green' if mod_date1 == mod_date2 else 'red'
-    mod_date_label1 = tk.Label(info_frame, text=f"Modification Date: {mod_date1}", fg=color_mod_date)
+    mod_date1_dt = datetime.strptime(mod_date1, '%Y-%m-%d %H:%M:%S')
+    mod_date2_dt = datetime.strptime(mod_date2, '%Y-%m-%d %H:%M:%S')
+
+    if mod_date1_dt > mod_date2_dt:
+        color_mod_date1 = 'red'   # Newer date is red
+        color_mod_date2 = 'green' # Older date is green
+    else:
+        color_mod_date1 = 'green'
+        color_mod_date2 = 'red'
+
+    mod_date_label1 = tk.Label(info_frame, text=f"Modification Date: {mod_date1}", fg=color_mod_date1)
     mod_date_label1.grid(row=3, column=0)
 
-    mod_date_label2 = tk.Label(info_frame, text=f"Modification Date: {mod_date2}", fg=color_mod_date)
+    mod_date_label2 = tk.Label(info_frame, text=f"Modification Date: {mod_date2}", fg=color_mod_date2)
     mod_date_label2.grid(row=3, column=2)
     
-    # Delete buttons
+    # Delete buttons with spacing
     delete_frame = tk.Frame(root)
     delete_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
@@ -117,8 +126,12 @@ def display_images(filepath1, filepath2, size1, size2, img_size1, img_size2, mod
     delete_button1 = tk.Button(delete_frame, text="Delete Left Image", command=delete_file1, bg='red')
     delete_button1.grid(row=0, column=0)
 
+    # Spacer between the buttons
+    delete_spacer = tk.Label(delete_frame, width=10)  # Adjust width to create space between buttons
+    delete_spacer.grid(row=0, column=1)
+
     delete_button2 = tk.Button(delete_frame, text="Delete Right Image", command=delete_file2, bg='red')
-    delete_button2.grid(row=0, column=1)
+    delete_button2.grid(row=0, column=2)
     
     root.mainloop()
 
