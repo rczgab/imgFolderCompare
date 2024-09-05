@@ -63,21 +63,44 @@ def display_images(filepath1, filepath2, size1, size2, img_size1, img_size2, mod
     info_frame = tk.Frame(root)
     info_frame.pack(side=tk.TOP, padx=10, pady=10)
     
-    color_size = 'green' if size1 == size2 else 'red'
-    color_img_size = 'green' if img_size1 == img_size2 else 'red'
-    color_mod_date = 'green' if mod_date1 == mod_date2 else 'red'
+    # Empty label for spacing (200px wide)
+    spacer = tk.Label(info_frame, width=20)  # Adjust width to create 200px space
+    spacer.grid(row=0, column=1, rowspan=4)
+
+    # File name comparison (same filename, but added here for structure)
+    file_name1 = os.path.basename(filepath1)
+    file_name2 = os.path.basename(filepath2)
+    color_name = 'green' if file_name1 == file_name2 else 'red'
+
+    name_label1 = tk.Label(info_frame, text=f"Name: {file_name1}", fg=color_name)
+    name_label1.grid(row=0, column=0)
+
+    name_label2 = tk.Label(info_frame, text=f"Name: {file_name2}", fg=color_name)
+    name_label2.grid(row=0, column=2)
 
     # File size comparison
-    size_label = tk.Label(info_frame, text=f"Size: {size1} bytes vs {size2} bytes", fg=color_size)
-    size_label.grid(row=1, column=0, columnspan=3)
+    color_size = 'green' if size1 == size2 else 'red'
+    size_label1 = tk.Label(info_frame, text=f"Size: {size1} bytes", fg=color_size)
+    size_label1.grid(row=1, column=0)
+
+    size_label2 = tk.Label(info_frame, text=f"Size: {size2} bytes", fg=color_size)
+    size_label2.grid(row=1, column=2)
 
     # Image size comparison
-    img_size_label = tk.Label(info_frame, text=f"Image Size: {img_size1} vs {img_size2}", fg=color_img_size)
-    img_size_label.grid(row=2, column=0, columnspan=3)
+    color_img_size = 'green' if img_size1 == img_size2 else 'red'
+    img_size_label1 = tk.Label(info_frame, text=f"Image Size: {img_size1}", fg=color_img_size)
+    img_size_label1.grid(row=2, column=0)
+
+    img_size_label2 = tk.Label(info_frame, text=f"Image Size: {img_size2}", fg=color_img_size)
+    img_size_label2.grid(row=2, column=2)
 
     # Modification date comparison
-    mod_date_label = tk.Label(info_frame, text=f"Modification Date: {mod_date1} vs {mod_date2}", fg=color_mod_date)
-    mod_date_label.grid(row=3, column=0, columnspan=3)
+    color_mod_date = 'green' if mod_date1 == mod_date2 else 'red'
+    mod_date_label1 = tk.Label(info_frame, text=f"Modification Date: {mod_date1}", fg=color_mod_date)
+    mod_date_label1.grid(row=3, column=0)
+
+    mod_date_label2 = tk.Label(info_frame, text=f"Modification Date: {mod_date2}", fg=color_mod_date)
+    mod_date_label2.grid(row=3, column=2)
     
     # Delete buttons
     delete_frame = tk.Frame(root)
